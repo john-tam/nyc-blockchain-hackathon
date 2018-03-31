@@ -1,5 +1,5 @@
 /*
-decentralized microblogging 
+decentralized microblogging
 Copyright (C) 2015 Jahn Bertsch
 
 This program is free software: you can redistribute it and/or modify
@@ -17,21 +17,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // "class" TweetRegistry
 contract TweetRegistry {
-	
+
 	// mappings to look up account names, account ids and addresses
 	mapping (address => string) _addressToAccountName;
 	mapping (uint => address) _accountIdToAccountAddress;
 	mapping (string => address) _accountNameToAddress;
-	
+
 	// might be interesting to see how many people use the system
 	uint _numberOfAccounts;
-	
+
 	// owner
 	address _registryAdmin;
-	
+
 	// allowed to administrate accounts only, not everything
 	address _accountAdmin;
-	
+
 	// if a newer version of this registry is available, force users to use it
 	bool _registrationDisabled;
 
@@ -63,7 +63,7 @@ contract TweetRegistry {
 			result = 0; // success
 		}
 	}
-	
+
 	function getNumberOfAccounts() constant returns (uint numberOfAccounts) {
 		numberOfAccounts = _numberOfAccounts;
 	}
@@ -75,7 +75,7 @@ contract TweetRegistry {
 	function getNameOfAddress(address addr) constant returns (string name) {
 		name = _addressToAccountName[addr];
 	}
-	
+
 	function getAddressOfId(uint id) constant returns (address addr) {
 		addr = _accountIdToAccountAddress[id];
 	}
@@ -86,7 +86,7 @@ contract TweetRegistry {
 		_accountNameToAddress[unregisteredAccountName] = address(0);
 		// _accountIdToAccountAddress is never deleted on purpose
 	}
-	
+
 	function adminUnregister(string name) {
 		if (msg.sender == _registryAdmin || msg.sender == _accountAdmin) {
 			address addr = _accountNameToAddress[name];
@@ -95,7 +95,7 @@ contract TweetRegistry {
 			// _accountIdToAccountAddress is never deleted on purpose
 		}
 	}
-	
+
 	function adminSetRegistrationDisabled(bool registrationDisabled) {
 		// currently, the code of the registry can not be updated once it is
 		// deployed. if a newer version of the registry is available, account
@@ -104,19 +104,19 @@ contract TweetRegistry {
 			_registrationDisabled = registrationDisabled;
 		}
 	}
-	
+
 	function adminSetAccountAdministrator(address accountAdmin) {
 		if (msg.sender == _registryAdmin) {
 			_accountAdmin = accountAdmin;
 		}
 	}
-	
+
 	function adminRetrieveDonations() {
 		if (msg.sender == _registryAdmin) {
 			_registryAdmin.send(this.balance);
 		}
 	}
-			
+
 	function adminDeleteRegistry() {
 		if (msg.sender == _registryAdmin) {
 			suicide(_registryAdmin); // this is a predefined function, it deletes the contract and returns all funds to the admin's address

@@ -1,96 +1,80 @@
-/*
-decentralized microblogging
-Copyright (C) 2015 Jahn Bertsch
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation in version 3.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-// "class" TweetAccount
+// Each account is a contract on the blockchain
+// Each account has pubic and private information
+// The private information is encrypted
 contract TweetAccount {
 
-	// data structure of a single tweet
-	struct Tweet {
+	struct Bit {
 		uint timestamp;
 		string tweetString;
 	}
 
-	// "array" of all tweets of this account: maps the tweet id to the actual tweet
-	mapping (uint => Tweet) _tweets;
+	// Public tweets
+	mapping (uint => Bit) public publicBits;
+	uint public numPublicBits;
 
-	// total number of tweets in the above _tweets mapping
-	uint _numberOfTweets;
+	// Private tweets
+	mapping (uint => Bit) public privateBits;
+	uint public numPrivateBits;
 
-	// "owner" of this account: only admin is allowed to tweet
-	address _adminAddress;
+	// Only the owner/user should be allowed to tweet
+	address owner;
 
-	// constructor
-	function TweetAccount() {
-		_numberOfTweets = 0;
-		_adminAddress = msg.sender;
+	// Password ecnrypted with the user's private key
+	bytes32 encryptedPassword;
+
+	// Takes in a password encrypted with the user's private key
+	function Account(bytes32 _encryptedPassword) {
+		numPublicBits = 0;
+		numPrivateBits = _encryptedNumPrivateBits;
+		owner = msg.sender;
+		encryptedPassword = _encryptedPassword;
 	}
 
-	// returns true if caller of function ("sender") is admin
-	function isAdmin() constant returns (bool isAdmin) {
-		return msg.sender == _adminAddress;
+	// Modifier to ensure only the owner can control his account
+	modifier onlyOwner() {
+		require(msg.sender == owner);
+		_;
 	}
 
-	// create new tweet
-	function tweet(string tweetString) returns (int result) {
-		if (!isAdmin()) {
-			// only owner is allowed to create tweets for this account
-			result = -1;
-		} else if (bytes(tweetString).length > 160) {
-			// tweet contains more than 160 bytes
-			result = -2;
-		} else {
-			_tweets[_numberOfTweets].timestamp = now;
-			_tweets[_numberOfTweets].tweetString = tweetString;
-			_numberOfTweets++;
-			result = 0; // success
-		}
+	// Create new public bit
+	function postPublicBit(string _bitString) onlyOwner {
+		require (bytes(bitString).length <= 160);
+
+		publicBits[numPublicBits].timestamp = now;
+		publicBits[numPublicBits].bitString = _bitString;
+		numPublicBits++;
 	}
 
-	function getTweet(uint tweetId) constant returns (string tweetString, uint timestamp) {
-		// returns two values
-		tweetString = _tweets[tweetId].tweetString;
-		timestamp = _tweets[tweetId].timestamp;
+	// Create new private (ecnrypted) bit
+	function postPrivateBit(string _encryptedBitString) onlyOwner {
+		require (bytes(bitString).length <= 160);
+
+		privateBits[numPrivateBits].timestamp = now;
+		privateBits[numPrivateBits].bitString = _encryptedBitString;
+		numPrivateBits++;
 	}
 
-	function getLatestTweet() constant returns (string tweetString, uint timestamp, uint numberOfTweets) {
-		// returns three values
-		tweetString = _tweets[_numberOfTweets - 1].tweetString;
-		timestamp = _tweets[_numberOfTweets - 1].timestamp;
-		numberOfTweets = _numberOfTweets;
+	// Get a public bit by ID
+	function getPublicBit(uint _bitId) constant returns (string bitString, uint timestamp) {
+		bitString = publicBits[_bitId].bitString;
+		timestamp = publicBits[_bitId].timestamp;
 	}
 
-	function getOwnerAddress() constant returns (address adminAddress) {
-		return _adminAddress;
+	// Get a private bit by ID
+	function getPrivateBits(uint _bitId) constant returns (string bitString, uint timestamp) {
+		bitString = privateBits[_bitId].bitString
+		timestamp = privateBits[_bitId].timestamp;
 	}
 
-	function getNumberOfTweets() constant returns (uint numberOfTweets) {
-		return _numberOfTweets;
+	// Get the latest public bit
+	function getLatestPublicBit() constant returns (string bitString, uint timestamp) {
+		bitString = publicBits[numPublicBits - 1].bitString;
+		timestamp = publicBits[numPublicBits - 1].timestamp;
 	}
 
-	// other users can send donations to your account: use this function for donation withdrawal
-	function adminRetrieveDonations(address receiver) {
-		if (isAdmin()) {
-			receiver.send(this.balance);
-		}
-	}
-
-	function adminDeleteAccount() {
-		if (isAdmin()) {
-			suicide(_adminAddress); // this is a predefined function, it deletes the contract and returns all funds to the owner's address
-		}
+	// Get the latest private bit
+	function getLatestPrivateBit() constant returns (string encryptedBitString, uint timestamp) {
+		encryptedBitString = privateBits[numPrivateBits - 1].bitSring;
+		timestmap = privateBits[numPrivateBits - 1].timestamp;
 	}
 }
