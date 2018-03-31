@@ -19,7 +19,7 @@ contract TweetAccount {
 	uint public numPrivateBits;
 
 	// Friends list
-	address[] friends;
+        address[] friends;
 
 	// Only the owner/user should be allowed to tweet
 	address owner;
@@ -81,5 +81,9 @@ contract TweetAccount {
 	function getLatestPrivateBit() constant returns (string encryptedBitString, uint timestamp) {
 		encryptedBitString = privateBits[numPrivateBits - 1].bitSring;
 		timestmap = privateBits[numPrivateBits - 1].timestamp;
-	}
+        }
+
+        function addToFriendsList(address friend) onlyOwner {
+               friends.push(friend)
+        }
 }
