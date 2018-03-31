@@ -1,9 +1,9 @@
 pragma solidity ^0.4.21;
 
 // Each account is a contract on the blockchain
-// Each account has pubic and private information
+// Each account has public and private information
 // The private information is encrypted
-contract TweetAccount {
+contract BitsAccount {
 
 	struct Bit {
 		uint timestamp;
@@ -24,11 +24,11 @@ contract TweetAccount {
 	// Only the owner/user should be allowed to tweet
 	address owner;
 
-	// Password ecnrypted with the user's private key
+	// Password encrypted with the user's private key
 	bytes32 encryptedPassword;
 
 	// Takes in a password encrypted with the user's private key
-	function Account(bytes32 _encryptedPassword) {
+	function BitsAccount(bytes32 _encryptedPassword) {
 		numPublicBits = 0;
 		numPrivateBits = _encryptedNumPrivateBits;
 		owner = msg.sender;
@@ -50,7 +50,7 @@ contract TweetAccount {
 		numPublicBits++;
 	}
 
-	// Create new private (ecnrypted) bit
+	// Create new private (encrypted) bit
 	function postPrivateBit(string _encryptedBitString) onlyOwner {
 		require (bytes(bitString).length <= 160);
 
@@ -79,7 +79,7 @@ contract TweetAccount {
 
 	// Get the latest private bit
 	function getLatestPrivateBit() constant returns (string encryptedBitString, uint timestamp) {
-		encryptedBitString = privateBits[numPrivateBits - 1].bitSring;
-		timestmap = privateBits[numPrivateBits - 1].timestamp;
+		encryptedBitString = privateBits[numPrivateBits - 1].bitString;
+		timestamp = privateBits[numPrivateBits - 1].timestamp;
 	}
 }
