@@ -42,7 +42,7 @@ contract TweetAccount {
 	}
 
 	// Create new public bit
-	function postPublicBit(string _bitString) onlyOwner {
+	function postPublicBit(string _bitString) public onlyOwner {
 		require (bytes(bitString).length <= 160);
 
 		publicBits[numPublicBits].timestamp = now;
@@ -50,8 +50,8 @@ contract TweetAccount {
 		numPublicBits++;
 	}
 
-	// Create new private (ecnrypted) bit
-	function postPrivateBit(string _encryptedBitString) onlyOwner {
+	// Create new private (encrypted) bit
+	function postPrivateBit(string _encryptedBitString) public onlyOwner {
 		require (bytes(bitString).length <= 160);
 
 		privateBits[numPrivateBits].timestamp = now;
@@ -60,25 +60,25 @@ contract TweetAccount {
 	}
 
 	// Get a public bit by ID
-	function getPublicBit(uint _bitId) constant returns (string bitString, uint timestamp) {
+	function getPublicBit(uint _bitId) public constant returns (string bitString, uint timestamp) {
 		bitString = publicBits[_bitId].bitString;
 		timestamp = publicBits[_bitId].timestamp;
 	}
 
 	// Get a private bit by ID
-	function getPrivateBits(uint _bitId) constant returns (string bitString, uint timestamp) {
+	function getPrivateBit(uint _bitId) public constant returns (string bitString, uint timestamp) {
 		bitString = privateBits[_bitId].bitString
 		timestamp = privateBits[_bitId].timestamp;
 	}
 
 	// Get the latest public bit
-	function getLatestPublicBit() constant returns (string bitString, uint timestamp) {
+	function getLatestPublicBit() public constant returns (string bitString, uint timestamp) {
 		bitString = publicBits[numPublicBits - 1].bitString;
 		timestamp = publicBits[numPublicBits - 1].timestamp;
 	}
 
 	// Get the latest private bit
-	function getLatestPrivateBit() constant returns (string encryptedBitString, uint timestamp) {
+	function getLatestPrivateBit() public constant returns (string encryptedBitString, uint timestamp) {
 		encryptedBitString = privateBits[numPrivateBits - 1].bitSring;
 		timestmap = privateBits[numPrivateBits - 1].timestamp;
 	}
