@@ -1,3 +1,5 @@
+pragma solidity ^0.4.21;
+
 // Each account is a contract on the blockchain
 // Each account has pubic and private information
 // The private information is encrypted
@@ -15,6 +17,9 @@ contract TweetAccount {
 	// Private tweets
 	mapping (uint => Bit) public privateBits;
 	uint public numPrivateBits;
+
+	// Friends list
+	address[] friends;
 
 	// Only the owner/user should be allowed to tweet
 	address owner;
