@@ -7,7 +7,7 @@ contract BitsAccount {
 
 	struct Bit {
 		uint timestamp;
-		string tweetString;
+		string bitString;
 	}
 
 	// Public tweets
@@ -19,7 +19,7 @@ contract BitsAccount {
 	uint public numPrivateBits;
 
 	// Friends list
-        address[] friends;
+  address[] friends;
 
 	// Only the owner/user should be allowed to tweet
 	address owner;
@@ -28,9 +28,9 @@ contract BitsAccount {
 	bytes32 encryptedPassword;
 
 	// Takes in a password encrypted with the user's private key
-	function BitsAccount(bytes32 _encryptedPassword) {
+	function BitsAccount(bytes32 _encryptedPassword) public {
 		numPublicBits = 0;
-		numPrivateBits = _encryptedNumPrivateBits;
+		numPrivateBits = 0;
 		owner = msg.sender;
 		encryptedPassword = _encryptedPassword;
 	}
@@ -43,7 +43,7 @@ contract BitsAccount {
 
 	// Create new public bit
 	function postPublicBit(string _bitString) public onlyOwner {
-		require (bytes(bitString).length <= 160);
+		require (bytes(_bitString).length <= 160);
 
 		publicBits[numPublicBits].timestamp = now;
 		publicBits[numPublicBits].bitString = _bitString;
@@ -52,7 +52,7 @@ contract BitsAccount {
 
 	// Create new private (encrypted) bit
 	function postPrivateBit(string _encryptedBitString) public onlyOwner {
-		require (bytes(bitString).length <= 160);
+		require (bytes(_encryptedBitString).length <= 160);
 
 		privateBits[numPrivateBits].timestamp = now;
 		privateBits[numPrivateBits].bitString = _encryptedBitString;
@@ -67,7 +67,7 @@ contract BitsAccount {
 
 	// Get a private bit by ID
 	function getPrivateBit(uint _bitId) public constant returns (string bitString, uint timestamp) {
-		bitString = privateBits[_bitId].bitString
+		bitString = privateBits[_bitId].bitString;
 		timestamp = privateBits[_bitId].timestamp;
 	}
 
@@ -80,11 +80,11 @@ contract BitsAccount {
 	// Get the latest private bit
 	function getLatestPrivateBit() public constant returns (string encryptedBitString, uint timestamp) {
 		encryptedBitString = privateBits[numPrivateBits - 1].bitString;
-		timestmap = privateBits[numPrivateBits - 1].timestamp;
+		timestamp = privateBits[numPrivateBits - 1].timestamp;
   }
 
 	// Add an address to friends list
   function addToFriendsList(address friend) public onlyOwner {
-  	friends.push(friend)
+  	friends.push(friend);
   }
 }
