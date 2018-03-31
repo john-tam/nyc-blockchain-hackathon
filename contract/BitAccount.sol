@@ -20,8 +20,12 @@ contract BitsAccount {
   }
 
   // Friends list
-  mapping (address => Friend) friends;
-  mapping (address => Friend) pending;
+  Friend[] private friends;
+  Friend[] private pendingFriends;
+  uint numFriends;
+  uint numPendingFriends;
+  mapping (address => Friend) fromAddressToFriend;
+  mapping (address => Friend) fromAddressToPendingFriend;
 
   // Public tweets
   mapping (uint => Bit) public publicBits;
@@ -41,6 +45,8 @@ contract BitsAccount {
   function BitsAccount(bytes32 _encryptedPassword) public {
     numPublicBits = 0;
     numPrivateBits = 0;
+    numFriends = 0;
+    numPendingFriends = 0;
     owner = msg.sender;
     encryptedPassword = _encryptedPassword;
   }
@@ -96,7 +102,9 @@ contract BitsAccount {
   // Accept a friend request; adds to the list.
   function receiveFriendRequest(address requester, string pw) public returns (bool) {
     Friend memory friend = Friend(requester, pw);
-    pending[requester] = friend;
+    fromAddressToPendingFriend[requester] = friend;
+    pendingFriends.push(friend);
+    numPendingFriends++;
     return true;
   }
 
@@ -109,13 +117,59 @@ contract BitsAccount {
     return true;
   }
 
+  // Iterates through a list and deletes the 
+  function deleteFromPendingList(address deleteAddress) onlyOwner private returns (bool) {
+    for (uint i = 0; i < numPendingFriends; i++) {
+      if (pendingFriends[i].addr == deleteAddress) {
+	delete pendingFriends[i];
+	numPendingFriends--;
+	return true;
+      }
+    }
+    return false;
+  }
+
   // Accept a friend request. Only the owner can do this.
   function acceptFriendRequest(address acceptAddress) onlyOwner public returns (bool) {
-    Friend storage pendingFriend = pending[acceptAddress];
+    Friend storage pendingFriend = fromAddressToPendingFriend[acceptAddress];
     if (pendingFriend.addr != 0) {   // If address exists, good to go.
-      friends[acceptAddress] = pendingFriend;
+
+      // Add to friends.
+      friends.push(pendingFriend);
+      fromAddressToFriend[acceptAddress] = pendingFriend;
+
+      // Delete from pending friends LIST.
+      deleteFromPendingList(pendingFriend.addr);
+      delete fromAddressToPendingFriend[pendingFriend.addr];
+
+      numFriends++;
       return true;
     }
     return false;
   }
+
+  // Returns an array of addresses.
+  function getAllFriends() onlyOwner public view returns (address []) {
+    address[] memory addressList = new address[](numFriends);
+    for (uint i = 0; i < numFriends; i++) {
+      addressList[i] = friends[i].addr;
+    }
+    return addressList;
+  }
+
+  // @TODO: DRY/refactor
+  function getAllPendingFriends() onlyOwner public view returns (address []) {
+    address[] memory addressList = new address[](numPendingFriends);
+    for (uint i = 0; i < numPendingFriends; i++) {
+      addressList[i] = pendingFriends[i].addr;
+    }
+    return addressList;
+  }
+
+  // @TODO: Check to see if it exists.
+  function getEncryptedPw(address addr) onlyOwner public view returns (string str) {
+    return fromAddressToFriend[addr].encryptedPw;
+  }
+
 }
+
