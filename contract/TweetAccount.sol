@@ -1,19 +1,6 @@
-/*
-decentralized microblogging
-Copyright (C) 2015 Jahn Bertsch
+pragma solidity ^0.4.21;
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation in version 3.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+import "github.com/OpenZeppelin/zeppelin-solidity/contracts/ownership/Ownable.sol";
 
 // "class" TweetAccount
 contract TweetAccount {
@@ -23,6 +10,9 @@ contract TweetAccount {
 		uint timestamp;
 		string tweetString;
 	}
+
+        // friends of this account
+        address [] friends;
 
 	// "array" of all tweets of this account: maps the tweet id to the actual tweet
 	mapping (uint => Tweet) _tweets;
@@ -93,4 +83,5 @@ contract TweetAccount {
 			suicide(_adminAddress); // this is a predefined function, it deletes the contract and returns all funds to the owner's address
 		}
 	}
+
 }
