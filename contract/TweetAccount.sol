@@ -3,7 +3,7 @@ pragma solidity ^0.4.21;
 // Each account is a contract on the blockchain
 // Each account has pubic and private information
 // The private information is encrypted
-contract TweetAccount {
+contract BitsAccount {
 
 	struct Bit {
 		uint timestamp;
@@ -28,7 +28,7 @@ contract TweetAccount {
 	bytes32 encryptedPassword;
 
 	// Takes in a password encrypted with the user's private key
-	function Account(bytes32 _encryptedPassword) {
+        function BitsAccount(bytes32 _encryptedPassword) {
 		numPublicBits = 0;
 		numPrivateBits = _encryptedNumPrivateBits;
 		owner = msg.sender;
