@@ -1,7 +1,7 @@
 pragma solidity ^0.4.21;
 
 // Each account is a contract on the blockchain
-// Each account has pubic and private information
+// Each account has public and private information
 // The private information is encrypted
 contract BitsAccount {
 
@@ -24,11 +24,11 @@ contract BitsAccount {
 	// Only the owner/user should be allowed to tweet
 	address owner;
 
-	// Password ecnrypted with the user's private key
+	// Password encrypted with the user's private key
 	bytes32 encryptedPassword;
 
 	// Takes in a password encrypted with the user's private key
-        function BitsAccount(bytes32 _encryptedPassword) {
+	function BitsAccount(bytes32 _encryptedPassword) {
 		numPublicBits = 0;
 		numPrivateBits = _encryptedNumPrivateBits;
 		owner = msg.sender;
@@ -79,11 +79,12 @@ contract BitsAccount {
 
 	// Get the latest private bit
 	function getLatestPrivateBit() public constant returns (string encryptedBitString, uint timestamp) {
-		encryptedBitString = privateBits[numPrivateBits - 1].bitSring;
+		encryptedBitString = privateBits[numPrivateBits - 1].bitString;
 		timestmap = privateBits[numPrivateBits - 1].timestamp;
-        }
+  }
 
-        function addToFriendsList(address friend) onlyOwner {
-               friends.push(friend)
-        }
+	// Add an address to friends list
+  function addToFriendsList(address friend) public onlyOwner {
+  	friends.push(friend)
+  }
 }
