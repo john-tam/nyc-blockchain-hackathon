@@ -19,7 +19,7 @@ contract BitsAccount {
 	uint public numPrivateBits;
 
 	// Friends list
-	address[] friends;
+        address[] friends;
 
 	// Only the owner/user should be allowed to tweet
 	address owner;
