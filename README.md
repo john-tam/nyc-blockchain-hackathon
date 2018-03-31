@@ -1,3 +1,3 @@
 # nyc-blockchain-hackathon
 
-Initial commit.
+A simple decentralized microblogging with encrypted messages on the blockchain.
