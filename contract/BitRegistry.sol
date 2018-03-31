@@ -21,17 +21,17 @@ contract BitAccountRegistry {
 
   // Lookup name from address
   function lookupNameFromAddress(address _address) public view returns (string) {
-      return addressToAccountName[_address];
+    return addressToAccountName[_address];
   }
 
   // Lookup address from id
   function lookupAddressFromId(uint _id) public view returns (address) {
-      return idToAccountAddress[_id];
+    return idToAccountAddress[_id];
   }
 
   // Lookup address from name
   function lookupAddressFromName(string _name) public view returns (address) {
-      return accountNameToAddress[_name];
+    return accountNameToAddress[_name];
   }
 
 
