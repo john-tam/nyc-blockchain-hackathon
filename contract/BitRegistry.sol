@@ -1,5 +1,3 @@
-pragma solidity ^0.4.21;
-
 // Central registry, allows lookup of information
 // Accounts can set their username by calling the "register" function
 // Also stores "accounts id" which is the index of the accounts id, needed for account lookup
