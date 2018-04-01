@@ -1,5 +1,12 @@
 pragma solidity ^0.4.21;
 
+// Created for the NYC Blockchain Hack.
+// Author name, GitHub Handle:
+// Caitlin Bahari, @cbahari
+// Caleb Ditchfield, @ditchfieldcaleb
+// Linda Ge, @linda-ge
+// John Tam, @john-tam
+
 // Each account is a contract on the blockchain
 // Each account has public and private information
 // The private information is encrypted
@@ -117,7 +124,7 @@ contract BitsAccount {
     return true;
   }
 
-  // Iterates through a list and deletes the 
+  // Iterates through a list and deletes the
   function deleteFromPendingList(address deleteAddress) onlyOwner private returns (bool) {
     for (uint i = 0; i < numPendingFriends; i++) {
       if (pendingFriends[i].addr == deleteAddress) {
@@ -172,4 +179,3 @@ contract BitsAccount {
   }
 
 }
-
