@@ -10,7 +10,4 @@ Using the Ethereum blockchain and its Solidity language, we created a decentrali
 5. Aggregate views of the user's public bits, private bits, and friends lists.
 
 Authors:
-Caitlin Bahari, @cbahari
-Caleb Ditchfield, @ditchfieldcaleb
-Linda Ge, @linda-ge
-John Tam, @john-tam
+Caitlin Bahari (cbahari); Caleb Ditchfield (ditchfieldcaleb); Linda Ge (linda-ge); John Tam (john-tam)
