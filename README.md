@@ -1,5 +1,5 @@
 # NYC Blockchain Hack: EthBits
-##### A simple decentralized microblogging with encrypted messages on the blockchain.
+##### A simple decentralized microblogging platform with encrypted messages on the blockchain.
 ------
 Using the Ethereum blockchain and its Solidity language, we created a decentralized version of Twitter, where each account is a contract on the blockchain, and has both public and private information. A "bit" is akin to a tweet. EthBits has the following features:
 
